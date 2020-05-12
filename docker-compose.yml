@@ -1,0 +1,33 @@
+version: "3.2"
+services:
+  php:
+    build: './php/'
+    networks:
+      - backend
+    volumes:
+      - ./public_html/:/var/www/html/
+    environment:
+      - DATABASE_USER=root
+      - DATABASE_PASS=dev_pass
+      - DATABASE_HOST=mysql
+  apache:
+    build: './apache/'
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public_html/:/var/www/html/
+  mysql:
+    image: mysql:8.0.20
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=dev_pass
+networks:
+  frontend:
+  backend:

@@ -4,6 +4,8 @@
  *
  * @author   Lucas Roe <lroe2930@gmail.com>
  */
+
+ require '../vendor/autoload.php';
 ?>
 <h1>Hello World!</h1>
 

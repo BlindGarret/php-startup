@@ -1,0 +1,13 @@
+{
+    "name": "blindgarret/php-startup",
+    "description": "Simple php startup template",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lucas Roe",
+            "email": "lroe2930@gmail.com"
+        }
+    ],
+    "require": {}
+}

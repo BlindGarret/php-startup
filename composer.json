@@ -9,5 +9,14 @@
             "email": "lroe2930@gmail.com"
         }
     ],
-    "require": {}
+    "autoload": {
+        "psr-4": {"PHPStartup\\": "src/"}
+    },
+    "scripts": {
+        "test": "phpunit ./tests"
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    }
 }

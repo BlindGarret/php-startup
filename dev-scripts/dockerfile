@@ -4,4 +4,4 @@ RUN apk update; \
     apk add build-base autoconf; \
     pecl install xdebug;
 COPY php.ini /usr/local/etc/php/php.ini
-RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install pdo_mysql

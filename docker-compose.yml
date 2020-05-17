@@ -11,7 +11,7 @@ services:
     environment:
       - DATABASE_USER=root
       - DATABASE_PASS=dev_pass
-      - DATABASE_HOST=mysql
+      - DATABASE_DSN=mysql:host=mysql;dbname=dev_db
   apache:
     build: './apache/'
     depends_on:
@@ -30,6 +30,7 @@ services:
       - backend
     environment:
       - MYSQL_ROOT_PASSWORD=dev_pass
+      - MYSQL_DATABASE=dev_db
 networks:
   frontend:
   backend:

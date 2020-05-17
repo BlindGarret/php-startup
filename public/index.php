@@ -11,13 +11,14 @@
 
 
 <?php
-$host = getenv('DATABASE_HOST');
+$dsn = getenv('DATABASE_DSN');
 $user = getenv('DATABASE_USER');
 $pass = getenv('DATABASE_PASS');
-$conn = new mysqli($host, $user, $pass);
+$pdo = new PDO($dsn, $user, $pass);
 
-if ($conn->connect_error) {
-    die("DB Connection failed: " . $conn->connect_error);
-}
-echo "Connected to MySQL successfully!";
+$stm = $pdo->query("SELECT VERSION()");
+
+$version = $stm->fetch();
+
+echo $version[0] . PHP_EOL;
 ?>

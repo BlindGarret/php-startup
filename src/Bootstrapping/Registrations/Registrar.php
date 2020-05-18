@@ -1,6 +1,6 @@
 <?php
 /**
- * Index page controller.
+ * Interface for classes capable of registering handles for an app.
  *
  * @author   Lucas Roe <lroe2930@gmail.com>
  */

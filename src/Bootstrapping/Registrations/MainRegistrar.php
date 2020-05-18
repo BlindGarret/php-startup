@@ -1,6 +1,6 @@
 <?php
 /**
- * Index page controller.
+ * Main Registrar for registering controllers.
  *
  * @author   Lucas Roe <lroe2930@gmail.com>
  */

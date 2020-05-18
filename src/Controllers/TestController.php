@@ -15,16 +15,12 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class TestController
 {
-    private PDO $pdo;
-
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
-    }
-
-    public function handleRequest(ServerRequestInterface $request, ResponseInterface $response, $args)
-    {
-        $stm = $this->pdo->query('SELECT VERSION()');
+    public function handleRequest(
+        PDO $pdo,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ) {
+        $stm = $pdo->query('SELECT VERSION()');
 
         $version = $stm->fetch();
         $response->getBody()->write('Test world! '.$version[0]);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Index page controller.
+ * Test page controller.
  *
  * @author   Lucas Roe <lroe2930@gmail.com>
  */

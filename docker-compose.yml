@@ -12,8 +12,8 @@ services:
       - DATABASE_USER=root
       - DATABASE_PASS=dev_pass
       - DATABASE_DSN=mysql:host=mysql;dbname=dev_db
-  apache:
-    build: './apache/'
+  nginx:
+    build: './nginx/'
     depends_on:
       - php
       - mysql
@@ -23,7 +23,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./public/:/var/www/html/
+      - ./public/:/var/www/html
   mysql:
     image: mysql:8.0.20
     networks:

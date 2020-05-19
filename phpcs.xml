@@ -4,6 +4,8 @@
     <arg name="tab-width" value="4"/>
 
     <!-- 2. General -->
+    <rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+	<rule ref="PSR2R.ControlStructures.NoInlineAssignment" />
 
     <!-- 2.1 Basic Coding Standard -->
 

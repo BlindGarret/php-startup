@@ -1,12 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Tests\Example;
+namespace Tests\Unit\Example;
 
 use PHPStartup\Example\Adder;
 use PHPUnit\Framework\TestCase;
 
-class AdderTest extends TestCase {
+/**
+ * @internal
+ * @coversNothing
+ */
+class AdderTest extends TestCase
+{
     public function addingTestCases()
     {
         return [
@@ -18,6 +24,10 @@ class AdderTest extends TestCase {
 
     /**
      * @dataProvider addingTestCases
+     *
+     * @param mixed $x
+     * @param mixed $y
+     * @param mixed $expected
      */
     public function testCanAdd($x, $y, $expected)
     {

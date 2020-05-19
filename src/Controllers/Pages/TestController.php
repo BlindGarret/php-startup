@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace PHPStartup\Controllers;
+namespace PHPStartup\Controllers\Pages;
 
 use PDO;
 use Psr\Http\Message\ResponseInterface;

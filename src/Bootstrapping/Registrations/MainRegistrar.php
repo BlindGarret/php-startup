@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace PHPStartup\Bootstrapping\Registrations;
 
-use PHPStartup\Controllers\IndexController;
-use PHPStartup\Controllers\TestController;
+use PHPStartup\Controllers\Pages\IndexController;
+use PHPStartup\Controllers\Pages\TestController;
 use Slim\App;
 
 class MainRegistrar implements Registrar

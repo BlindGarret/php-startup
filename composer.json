@@ -13,7 +13,8 @@
         "psr-4": {"PHPStartup\\": "src/"}
     },
     "scripts": {
-        "test": "phpunit ./tests"
+        "unit": "phpunit ./tests/unit",
+        "integration": "phpunit ./tests/integration"
     },
     "require": {
         "slim/slim": "^4.0",

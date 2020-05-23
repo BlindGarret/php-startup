@@ -2,4 +2,7 @@
     "[php]": {
         "files.trimTrailingWhitespace": true
     },
+    "files.associations": {
+        "*.tpl": "twig"
+    }
 }

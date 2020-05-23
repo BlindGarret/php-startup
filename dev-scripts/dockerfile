@@ -5,3 +5,5 @@ RUN apk update; \
     pecl install xdebug;
 COPY php.ini /usr/local/etc/php/php.ini
 RUN docker-php-ext-install pdo_mysql
+RUN mkdir /var/www/twig
+RUN chown -R www-data:www-data /var/www/twig

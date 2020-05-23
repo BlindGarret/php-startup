@@ -21,9 +21,13 @@ use PHPStartup\DataServices\ISqlInfoService;
 use PHPStartup\DataServices\MysqlServices\SqlInfoService;
 use PHPStartup\Bootstrapping\Registrations\ApiRegistrar;
 use PHPStartup\Bootstrapping\Registrations\MainRegistrar;
+use PHPStartup\Configuration\Config;
 use PHPStartup\Configuration\DbConfig;
+use PHPStartup\Configuration\TwigConfig;
 use Psr\Container\ContainerInterface;
 use Slim\App;
+use Twig\Environment as TwigEnvironment;
+use Twig\Loader\FilesystemLoader;
 
 class Bootstrapper
 {
@@ -34,6 +38,7 @@ class Bootstrapper
     {
         // Build DI Container
         $builder = new ContainerBuilder();
+        $this->registerConfiguration($builder);
         $this->registerServices($builder);
         $this->container = $builder->build();
 
@@ -49,14 +54,41 @@ class Bootstrapper
         $this->app->run();
     }
 
+    private function registerConfiguration(ContainerBuilder $builder): void
+    {
+        $builder->addDefinitions([
+            // Root Config
+            'config.environment' => getenv('DEPLOYMENT_ENV') ?? "PROD",
+
+            // DB Config
+            'config.db.dsn' => getenv('DATABASE_DSN'),
+            'config.db.user' => getenv('DATABASE_USER'),
+            'config.db.pass' => getenv('DATABASE_PASS'),
+
+            // Twig Config
+            'config.twig.compilationCacheDir' => getenv('TWIG_COMPILATION_CACHE_DIR') ?? false,
+        ]);
+    }
+
     private function registerServices(ContainerBuilder $builder): void
     {
         $builder->addDefinitions([
-            DbConfig::class => create(DbConfig::class),
+            // Database
             PDO::class => function (ContainerInterface $container) {
-                $dbConfig = $container->get(DbConfig::class);
+                return new PDO(
+                    $container->get('config.db.dsn'),
+                    $container->get('config.db.user'),
+                    $container->get('config.db.pass')
+                );
+            },
 
-                return new PDO($dbConfig->getDsn(), $dbConfig->getUser(), $dbConfig->getPass());
+            // Twig
+            TwigEnvironment::class => function (ContainerInterface $container) {
+                return new TwigEnvironment(new FilesystemLoader(__DIR__.'/../Views'), [
+                    'cache' =>  $container->get('config.twig.compilationCacheDir'),
+                    'auto_reload' => $container->get('config.environment') === 'DEV',
+                    'debug' => $container->get('config.environment') === 'DEV',
+                ]);
             },
 
             // Data Services

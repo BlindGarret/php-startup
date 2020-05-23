@@ -20,4 +20,6 @@ FROM php:7.4-fpm-alpine3.11 as run-stage
 RUN apk update; \
     apk upgrade;
 RUN docker-php-ext-install pdo_mysql
+RUN mkdir /var/www/twig
+RUN chown -R www-data:www-data /var/www/twig
 COPY --from=build-stage /build/public /build/src /build/vendor ./

@@ -456,3 +456,8 @@ composer.phar
 *.css.map
 *.sass.map
 *.scss.map
+
+##### TWIG
+var/
+.compilation-cache
+.logs

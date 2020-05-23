@@ -11,11 +11,18 @@ namespace PHPStartup\Bootstrapping;
 
 use DI\Bridge\Slim\Bridge;
 use DI\Container;
+use DI\ContainerBuilder;
+
+use function DI\autowire;
 use function DI\create;
 use Middlewares\TrailingSlash;
 use PDO;
+use PHPStartup\DataServices\ISqlInfoService;
+use PHPStartup\DataServices\MysqlServices\SqlInfoService;
+use PHPStartup\Bootstrapping\Registrations\ApiRegistrar;
 use PHPStartup\Bootstrapping\Registrations\MainRegistrar;
 use PHPStartup\Configuration\DbConfig;
+use Psr\Container\ContainerInterface;
 use Slim\App;
 
 class Bootstrapper
@@ -26,9 +33,9 @@ class Bootstrapper
     public function initialize(): void
     {
         // Build DI Container
-        $this->container = new Container();
-        $this->registerServices();
-        $this->registerControllers();
+        $builder = new ContainerBuilder();
+        $this->registerServices($builder);
+        $this->container = $builder->build();
 
         // Build Slim APP
         $this->app = Bridge::create($this->container);
@@ -42,24 +49,26 @@ class Bootstrapper
         $this->app->run();
     }
 
-    private function registerServices(): void
+    private function registerServices(ContainerBuilder $builder): void
     {
-        $this->container->set(DbConfig::class, create(DbConfig::class));
-        $this->container->set(PDO::class, function () {
-            $dbConfig = $this->container->get(DbConfig::class);
+        $builder->addDefinitions([
+            DbConfig::class => create(DbConfig::class),
+            PDO::class => function (ContainerInterface $container) {
+                $dbConfig = $container->get(DbConfig::class);
 
-            return new PDO($dbConfig->getDsn(), $dbConfig->getUser(), $dbConfig->getPass());
-        });
-    }
+                return new PDO($dbConfig->getDsn(), $dbConfig->getUser(), $dbConfig->getPass());
+            },
 
-    private function registerControllers(): void
-    {
+            // Data Services
+            ISqlInfoService::class => autowire(SqlInfoService::class)
+        ]);
     }
 
     private function registerHandlers(): void
     {
         $registrars = [
             MainRegistrar::class,
+            ApiRegistrar::class,
         ];
 
         foreach ($registrars as $k => $registrar) {

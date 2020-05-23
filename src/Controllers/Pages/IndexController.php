@@ -10,20 +10,18 @@ declare(strict_types=1);
 namespace PHPStartup\Controllers\Pages;
 
 use PDO;
+use PHPStartup\DataServices\ISqlInfoService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class IndexController
 {
     public function handleRequest(
-        PDO $pdo,
+        ISqlInfoService $dataService,
         ServerRequestInterface $request,
         ResponseInterface $response
     ) {
-        $stm = $pdo->query('SELECT VERSION()');
-
-        $version = $stm->fetch();
-        $response->getBody()->write('Hello world! '.$version[0]);
+        $response->getBody()->write('Hello world! '. $dataService->getSqlVersion());
 
         return $response;
     }

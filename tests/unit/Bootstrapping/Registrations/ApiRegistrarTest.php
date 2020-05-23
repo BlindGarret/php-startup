@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Bootstrapping\Registrations;
 
-use PHPStartup\Bootstrapping\Registrations\MainRegistrar;
+use PHPStartup\Bootstrapping\Registrations\ApiRegistrar;
 use PHPUnit\Framework\TestCase;
 use Slim\App;
 
-class MainRegistrarTest extends TestCase
+class ApiRegistrarTest extends TestCase
 {
     /*
      * Routes are a part of the Interface of an API, so we will test for them.
@@ -26,8 +26,7 @@ class MainRegistrarTest extends TestCase
     public function getRoutePaths()
     {
         return [
-            ['/'],
-            ['/test/'],
+            ['/api/sql/version/'],
         ];
     }
 
@@ -46,7 +45,7 @@ class MainRegistrarTest extends TestCase
             return true;
         };
 
-        $registrar = new MainRegistrar();
+        $registrar = new ApiRegistrar();
         $appStub->expects($this->any())
             ->method('post')
             ->with($this->callback($checkForTrailingSlash), $this->anything())
@@ -84,7 +83,7 @@ class MainRegistrarTest extends TestCase
             ->getMock()
         ;
 
-        $registrar = new MainRegistrar();
+        $registrar = new ApiRegistrar();
         $appStub->expects($this->exactly($expected))->method('post');
 
         $registrar->registerHandlers($appStub);
@@ -99,7 +98,7 @@ class MainRegistrarTest extends TestCase
             ->getMock()
         ;
 
-        $registrar = new MainRegistrar();
+        $registrar = new ApiRegistrar();
         $appStub->expects($this->exactly($expected))->method('put');
 
         $registrar->registerHandlers($appStub);
@@ -114,7 +113,7 @@ class MainRegistrarTest extends TestCase
             ->getMock()
         ;
 
-        $registrar = new MainRegistrar();
+        $registrar = new ApiRegistrar();
         $appStub->expects($this->exactly($expected))->method('delete');
 
         $registrar->registerHandlers($appStub);
@@ -129,7 +128,7 @@ class MainRegistrarTest extends TestCase
             ->getMock()
         ;
 
-        $registrar = new MainRegistrar();
+        $registrar = new ApiRegistrar();
         $appStub->expects($this->exactly($expected))->method('patch');
 
         $registrar->registerHandlers($appStub);
@@ -144,7 +143,7 @@ class MainRegistrarTest extends TestCase
             ->getMock()
         ;
 
-        $registrar = new MainRegistrar();
+        $registrar = new ApiRegistrar();
         $appStub->expects($this->exactly($expected))->method('options');
 
         $registrar->registerHandlers($appStub);
@@ -152,14 +151,14 @@ class MainRegistrarTest extends TestCase
 
     public function testRegisterHandlersRegistersExpectedAmountOfGetRoutes()
     {
-        $expected = 2;
+        $expected = 1;
         /** @var \Slim\App&\PHPUnit\Framework\MockObject\MockObject $appStub */
         $appStub = $this->getMockBuilder(App::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
 
-        $registrar = new MainRegistrar();
+        $registrar = new ApiRegistrar();
         $appStub->expects($this->exactly($expected))->method('get');
 
         $registrar->registerHandlers($appStub);
@@ -177,7 +176,7 @@ class MainRegistrarTest extends TestCase
         ;
         $matched = false; //a bit hacky but it's a limitation of PHPUnit by the looks
 
-        $registrar = new MainRegistrar();
+        $registrar = new ApiRegistrar();
         $appStub->expects($this->any())
             ->method('get')
             ->with($this->callback(function ($route) use ($expected, &$matched) {
